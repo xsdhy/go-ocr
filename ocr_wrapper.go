@@ -3,11 +3,9 @@ package main
 // -I: 配置编译选项
 // -L: 依赖库路径
 
-//export LD_LIBRARY_PATH=/data/chineseocr_lite-onnx/go/lib/lib
-
 /*
-#cgo CFLAGS: -I ./lib/include
-#cgo LDFLAGS: -L ./lib/lib -lOcrLiteOnnx -lstdc++
+#cgo CFLAGS: -I ./cpp/Linux-CLIB/include
+#cgo LDFLAGS: -L ./cpp/Linux-CLIB/lib -lOcrLiteOnnx -lstdc++
 
 #include <stdlib.h>
 #include <string.h>
