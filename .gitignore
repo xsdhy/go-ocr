@@ -1,0 +1,6 @@
+.idea
+ocr
+go.sum
+config.yaml
+.DS_Store
+/tmp
