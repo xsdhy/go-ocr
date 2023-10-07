@@ -132,6 +132,7 @@ dmypy.json
 
 #idea
 .idea
+install/
 cmake-build-debug/
 build/
 build-lib/
