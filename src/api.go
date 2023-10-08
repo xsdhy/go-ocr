@@ -1,11 +1,10 @@
-package main
+package src
 
 import (
 	"errors"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -16,6 +15,11 @@ type OcrDTO struct {
 	ImageBase64 string `json:"image_base_64"`
 	NeedBlock   bool   `json:"need_block"`
 }
+type Response struct {
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
+}
 
 func OcrJson(c *gin.Context) {
 	var input OcrDTO
@@ -25,10 +29,18 @@ func OcrJson(c *gin.Context) {
 		return
 	}
 
-	//url图片，下载
-	imagePath, err := downloadAndSaveImage(input.ImageUrl)
+	var imagePath string
+	if input.ImageBase64 != "" {
+		imagePath, err = saveBase64Image(input.ImageBase64)
+	} else if input.ImageUrl != "" {
+		imagePath, err = downloadAndSaveImage(input.ImageUrl)
+	}
 	if err != nil {
 		SendError(c, err.Error())
+		return
+	}
+	if imagePath == "" {
+		SendError(c, "请输入图片信息")
 		return
 	}
 
@@ -78,16 +90,9 @@ func ocr(imagePath string, input OcrDTO) (error, *Response) {
 	if !input.NeedBlock {
 		ocrResult.TextBlocks = nil
 	}
-	return nil, &Response{Code: 200, Msg: "ok", Data: ocrResult, Time: time.Now()}
-}
-
-type Response struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
-	Time time.Time   `json:"time"`
+	return nil, &Response{Code: 200, Msg: "ok", Data: ocrResult}
 }
 
 func SendError(c *gin.Context, message string) {
-	c.JSON(http.StatusOK, Response{Code: 500, Msg: message, Data: nil, Time: time.Now()})
+	c.JSON(http.StatusOK, Response{Code: 500, Msg: message, Data: nil})
 }

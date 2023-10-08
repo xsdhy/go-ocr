@@ -1,14 +1,54 @@
-package main
+package src
 
 import (
+	"bytes"
 	"crypto/md5"
+	"encoding/base64"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
+
+func saveBase64Image(base64String string) (string, error) {
+	// 创建一个临时目录
+	tmpDir := "tmp"
+	if err := os.MkdirAll(tmpDir, os.ModePerm); err != nil {
+		return "", err
+	}
+
+	// 创建一个随机数生成器
+	rand.Seed(time.Now().UnixNano())
+
+	// 解码base64字符串
+	decoded, err := base64.StdEncoding.DecodeString(base64String)
+	if err != nil {
+		return "", err
+	}
+
+	// 生成一个唯一的文件名，包括时间戳和4位随机数
+	timestamp := time.Now().UnixNano()
+	randomNum := rand.Intn(10000)
+	filename := fmt.Sprintf("tmp/%d_%04d.png", timestamp, randomNum)
+
+	// 创建文件并写入解码后的图片数据
+	file, err := os.Create(filename)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, bytes.NewReader(decoded))
+	if err != nil {
+		return "", err
+	}
+
+	return filename, nil
+}
 
 func downloadAndSaveImage(imageURL string) (string, error) {
 	// 创建一个临时目录

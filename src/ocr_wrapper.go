@@ -1,4 +1,4 @@
-package main
+package src
 
 // -I: 配置编译选项
 // -L: 依赖库路径

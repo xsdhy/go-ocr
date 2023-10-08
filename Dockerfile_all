@@ -1,4 +1,13 @@
-FROM xsdhy/chineseocr_lite_cpp as builder
+FROM ubuntu:18.04 as builder
+RUN apt-get update && apt-get install -y build-essential wget libssl-dev p7zip-full && apt-get remove cmake
+
+RUN cd /usr/local/src && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.27.7/cmake-3.27.7.tar.gz && \
+    tar xzvf cmake-3.27.7.tar.gz && \
+    cd cmake-3.27.7 && \
+    ./bootstrap && \
+    make && \
+    make install
 
 WORKDIR /app
 ADD . /app
@@ -20,10 +29,9 @@ FROM ubuntu:18.04
 RUN apt-get update && apt-get install -y build-essential wget
 RUN wget -c https://dl.google.com/go/go1.20.9.linux-amd64.tar.gz -O - | tar -xz -C /usr/local
 ENV PATH=$PATH:/usr/local/go/bin
+WORKDIR /app
 
 COPY --from=builder /app /app
-
-WORKDIR /app
 
 RUN go mod tidy && GOOS=linux CGO_ENABLED=1 GOARCH=amd64 CGO_LDFLAGS="-g -O2 -Wl,--no-as-needed -ldl" go build -ldflags="-s -w" -installsuffix cgo -o ocr .
 

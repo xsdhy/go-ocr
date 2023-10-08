@@ -2,12 +2,13 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"ocr/src"
 )
 
 func main() {
-	Init()
+	src.Init()
 	r := gin.Default()
-	r.POST("/api/ocr", OcrJson)
-	r.POST("/api/ocr_file", OcrFile)
+	r.POST("/api/ocr", src.OcrJson)
+	r.POST("/api/ocr_file", src.OcrFile)
 	r.Run()
 }
