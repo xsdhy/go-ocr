@@ -4,8 +4,8 @@ package src
 // -L: 依赖库路径
 
 /*
-#cgo CFLAGS: -I ./cpp/install/include
-#cgo LDFLAGS: -L ./cpp/install/lib -lOcrLiteOnnx -lstdc++
+#cgo CFLAGS: -I ../cpp/install/include
+#cgo LDFLAGS: -L ../cpp/install/lib -lOcrLiteOnnx -lstdc++
 
 #include <stdlib.h>
 #include <string.h>
