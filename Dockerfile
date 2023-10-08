@@ -2,7 +2,7 @@ FROM ubuntu:18.04 as builder
 RUN apt-get update && apt-get install -y build-essential wget libssl-dev p7zip-full && apt-get remove cmake
 
 RUN cd /usr/local/src && \
-    wget wget https://github.com/Kitware/CMake/releases/download/v3.27.7/cmake-3.27.7.tar.gz && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.27.7/cmake-3.27.7.tar.gz && \
     tar xzvf cmake-3.27.7.tar.gz && \
     cd cmake-3.27.7 && \
     ./bootstrap && \
@@ -23,8 +23,6 @@ RUN cd /app/cpp && \
     cmake -DCMAKE_INSTALL_PREFIX=install -DCMAKE_BUILD_TYPE=Release -DOCR_OUTPUT=CLIB && \
     cmake --build . --config Release  && \
     cmake --build . --config Release --target install
-
-
 
 FROM ubuntu:18.04
 
