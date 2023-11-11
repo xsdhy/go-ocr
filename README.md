@@ -9,7 +9,7 @@
 ## 使用
 
 ```bash
-docker run --name ocr -itd --rm -p 8080:8080 xsdhy/go-ocr:1.0
+docker run --name ocr --rm -d -p 8080:8080 xsdhy/go-ocr:1.0
 ```
 
 ## 接口文档

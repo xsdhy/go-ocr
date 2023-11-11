@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/md5"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -75,6 +76,10 @@ func downloadAndSaveImage(imageURL string) (string, error) {
 		return "", err
 	}
 	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return "", errors.New("HTTP request failed with status code: " + response.Status)
+	}
 
 	// 将图片数据复制到文件
 	_, err = io.Copy(file, response.Body)
