@@ -26,9 +26,9 @@ int ocr_init(int numThread, const char *dbNetPath, const char *anglePath, const 
     }
     g_ocrLite->setNumThread(numThread);
     g_ocrLite->initLogger(
-            true,//isOutputConsole
+            false,//isOutputConsole
             false,//isOutputPartImg
-            true);//isOutputResultImg
+            false);//isOutputResultImg
     g_ocrLite->Logger(
             "ocr_init numThread=%d, dbNetPath=%s,anglePath=%s,crnnPath=%s,keyPath=%s \n",
             numThread, dbNetPath, anglePath, crnnPath, keyPath);
