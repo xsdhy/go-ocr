@@ -1,3 +1,6 @@
+//go:build !test
+// +build !test
+
 package src
 
 // -I: 配置编译选项
@@ -51,6 +54,7 @@ type OCRResultData struct {
 	DetectTime float64        `json:"detect_time,omitempty"`
 	TextBlocks []OCRTextBlock `json:"text_blocks,omitempty"`
 	Texts      []string       `json:"texts"`
+	QRCode     bool           `json:"qr_code,omitempty"` // 是否存在二维码
 }
 
 func Init() int {
